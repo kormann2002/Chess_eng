@@ -1,5 +1,5 @@
-cd "c:\Users\luizf\chessEng\" ; if ($?) { gcc main.c init.c bitboards.c board.c data.c hashkeys.c -o main } ; if ($?) { .\main }
-cd "c:\Users\luizf\chessEng\" ; if ($?) { gcc main.c init.c bitboards.c board.c data.c hashkeys.c -o main } ; if ($?) { .\main }
+cd "c:\Users\luizf\chessEng\" ; if ($?) { gcc main.c init.c bitboards.c board.c data.c hashkeys.c attack.c -o main } ; if ($?) { .\main }
+
 
 
 
