@@ -10,14 +10,23 @@
 int main() {
     AllInit();
 
-    S_BOARD board[1];
+    int move = 0;
+    int from = A2;
+    int to = H7;
+    int cap = wR;
+    int prom = bB;
 
-    ParseFen(FEN3, board);
-    PrintBoard(board);
+    move = ((from) | (to<<7) | (cap<<14) | (prom<<20));
 
-    PrintBitBoard(board->pawns[BOTH]);
+    printf("from: %d to: %d cap: %d prom: %d\n",
+    FROMSQ(move), TOSQ(move), CAPTURED(move), PROMOTED(move)
+    );
 
-    ASSERT(checkBoard(board));
+    printf("Algebraic from: %s\n", PrSq(from));
+    printf("Algebraic to: %s\n", PrSq(to));
+    printf("Algebraic move: %s\n", PrMove(move));
+
+    
 
 
 

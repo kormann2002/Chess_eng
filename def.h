@@ -23,6 +23,7 @@ typedef unsigned long long U64;
 
 #define BRD_SQ_NUM 120 //board size of 120 sqrs
 #define MAXGAMEMOVES 2048
+#define MAXPOSTIONMOVES 256
 
 #define START_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
@@ -43,9 +44,16 @@ enum {
     A7 = 81, B7, C7, D7, E7, F7, G7, H7,
     A8 = 91, B8, C8, D8, E8, F8, G8, H8, NO_SQ, OFFBOARD
 };
-enum {TRUE, FALSE};
+enum {FALSE, TRUE};
 
 enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8 }; //castle 
+
+typedef struct {
+
+    int move;
+    int score;
+
+} S_MOVE;
 
 typedef struct{
 
@@ -88,6 +96,33 @@ typedef struct{
     int pList[13][10];
 
 } S_BOARD;
+
+/*GAME MOVES*/
+
+/*
+
+0000 0000 0000 0000 0000 0111 1111 -> From 0x7f
+0000 0000 0000 0011 1111 1000 0000 -> To >> 7, 0x7f
+0000 0000 0011 1100 0000 0000 0000 -> Captured >>14, 0xf
+0000 0000 0100 0000 0000 0000 0000 -> EnPas 0x40000
+0000 0000 1000 0000 0000 0000 0000 -> Pawn Start 0x80000
+0000 1111 0000 0000 0000 0000 0000 -> Promoted Piece >> 20, 0xf
+0001 0000 0000 0000 0000 0000 0000 -> Castle 0x1000000
+
+*/
+
+#define FROMSQ(m) ((m) & 0x7f)
+#define TOSQ(m) (((m)>>7) & 0x7f)
+#define CAPTURED(m) (((m)>>14) & 0xf)
+#define PROMOTED(m) (((m)>>20) & 0xf)
+
+#define MFLAGEP 0X40000
+#define MFLAGPS 0X80000
+#define MFLAGCA 0X1000000
+
+#define MFLAGCAP 0X7C000
+#define MFLAGPROM 0XF00000
+
 
 /*MACROS*/
 
@@ -155,5 +190,10 @@ extern void UpdateListMaterial(S_BOARD *pos);
 
 //attack.c
 extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
+
+//io.c
+
+extern char *PrMove(const int move);
+extern char *PrSq(const int sq);
 
 #endif
