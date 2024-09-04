@@ -3,10 +3,10 @@
 
 #include "stdlib.h"
 
-#ifndef DEBUG
+#ifdef NDEBUG
 #define ASSERT(n)
 #else
-#define ASSERT(n)
+#define ASSERT(n)\
 if(! (n)){ \
 printf("%s - Failed", #n);\
 printf("On %s", __DATE__);\
@@ -42,11 +42,11 @@ enum {
     A5 = 61, B5, C5, D5, E5, F5, G5, H5,
     A6 = 71, B6, C6, D6, E6, F6, G6, H6,
     A7 = 81, B7, C7, D7, E7, F7, G7, H7,
-    A8 = 91, B8, C8, D8, E8, F8, G8, H8, NO_SQ, OFFBOARD
+    A8 = 91, B8, C8, D8, E8, F8, G8, H8, NO_SQ, OFFBOARD //120 enumerated board
 };
 enum {FALSE, TRUE};
 
-enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8 }; //castle 
+enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8 }; //castle permission 
 
 typedef struct {
 
@@ -54,6 +54,13 @@ typedef struct {
     int score;
 
 } S_MOVE;
+
+typedef struct{
+
+    S_MOVE moves[MAXPOSTIONMOVES];
+    int count;
+
+}S_MOVELIST;
 
 typedef struct{
 
@@ -166,6 +173,7 @@ extern int PieceKnight[13];
 extern int PieceKing[13];
 extern int PieceRookQueen[13];
 extern int PieceBishopQueen[13];
+extern int PieceSlides[13];
 
 
 
@@ -187,6 +195,7 @@ extern void ResetBoard(S_BOARD *pos);
 extern int ParseFen(char *fen, S_BOARD *pos);
 extern void PrintBoard(const S_BOARD *pos);
 extern void UpdateListMaterial(S_BOARD *pos);
+extern int CheckBoard(const S_BOARD *pos);
 
 //attack.c
 extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
@@ -195,5 +204,17 @@ extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
 
 extern char *PrMove(const int move);
 extern char *PrSq(const int sq);
+extern void PrintMoveList(const S_MOVELIST *list);
+
+//validate.c
+
+extern int SqOnboard(const int sq);
+extern int SideValid(const int side);
+extern int FileRankValid(const int fr);
+extern int PieceValidEmpty(const int pce);
+extern int PieceValid(const int pce);
+
+//movegen.c
+extern void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list);
 
 #endif

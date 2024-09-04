@@ -2,34 +2,26 @@
 #include "stdlib.h"
 #include "def.h"
 
-#define FEN1 "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
-#define FEN2 "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2"
-#define FEN3 "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"
-
+#define PAWNMOVESW "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"
+#define PAWNMOVESB "rnbqkbnr/p1p1pp3/3p3p/1p1p4/2P1Pp2/8/PP1P1PpP/RNBQKB1R b - e3 e6 0 1"
+#define KNIGHTSKINGS "5k2/1n6/4n3/6N1/8/3N4/8/5K2 w - - 0 1"
+#define ROOKS "6k1/8/5r2/8/1nR5/5N2/8/6K1 w - - 0 1"
 
 int main() {
     AllInit();
 
-    int move = 0;
-    int from = A2;
-    int to = H7;
-    int cap = wR;
-    int prom = bB;
+    S_BOARD board[1];
 
-    move = ((from) | (to<<7) | (cap<<14) | (prom<<20));
+    ParseFen(ROOKS, board);
 
-    printf("from: %d to: %d cap: %d prom: %d\n",
-    FROMSQ(move), TOSQ(move), CAPTURED(move), PROMOTED(move)
-    );
+    PrintBoard(board)
+;
 
-    printf("Algebraic from: %s\n", PrSq(from));
-    printf("Algebraic to: %s\n", PrSq(to));
-    printf("Algebraic move: %s\n", PrMove(move));
-
-    
+    S_MOVELIST list[1];
+    GenerateAllMoves(board, list);
 
 
 
-    
+
     return 0;
 }

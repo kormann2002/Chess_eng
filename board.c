@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "def.h"
 
-int Checkboard(const S_BOARD *pos){
+int CheckBoard(const S_BOARD *pos){
     int t_pceNum[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int t_bigPce[2] = {0, 0};
     int t_majPce[2] = {0, 0};
@@ -36,7 +36,7 @@ int Checkboard(const S_BOARD *pos){
     }
 
     for(t_piece = wP; t_piece<= bK; ++t_piece){
-        ASSERT(t_pce_num[t_piece] == pos->pceNum[t_piece]);
+        ASSERT(t_pceNum[t_piece] == pos->pceNum[t_piece]);
     }
     
     pcount = CNT(t_pawns[WHITE]);
@@ -63,9 +63,9 @@ int Checkboard(const S_BOARD *pos){
     }
 
     ASSERT(t_material[WHITE]==pos->material[WHITE] && t_material[BLACK]==pos->material[BLACK]);
-    ASSERT(t_minPce[WHITE]==pos->t_minPce[WHITE] && t_minPce[BLACK]==pos->t_minPce[BLACK]);
-    ASSERT(t_majPce[WHITE]==pos->t_majPce[WHITE] && t_majPce[BLACK]==pos->t_majPce[BLACK]);
-    ASSERT(t_bigPce[WHITE]==pos->t_bigPce[WHITE] && t_bigPce[BLACK]==pos->t_bigPce[BLACK]);
+    ASSERT(t_minPce[WHITE]==pos->minPce[WHITE] && t_minPce[BLACK]==pos->minPce[BLACK]);
+    ASSERT(t_majPce[WHITE]==pos->majPce[WHITE] && t_majPce[BLACK]==pos->majPce[BLACK]);
+    ASSERT(t_bigPce[WHITE]==pos->bigPce[WHITE] && t_bigPce[BLACK]==pos->bigPce[BLACK]);
 
     ASSERT(pos->side==WHITE || pos->side==BLACK);
     ASSERT(GeneratePosKey(pos)==pos->posKey);
@@ -110,7 +110,8 @@ void UpdateListMaterial(S_BOARD *pos){ //updates S_BOARD arrays
 
 
 int ParseFen(char *fen, S_BOARD *pos){
-    ASSERT(fen!NULL);
+
+    ASSERT(fen!=NULL)
     ASSERT(pos!=NULL);
 
     int rank = RANK_8;
@@ -130,7 +131,7 @@ int ParseFen(char *fen, S_BOARD *pos){
             case 'p' : piece = bP ; break;
             case 'r' : piece =  bR; break;
             case 'n' : piece =  bN; break;
-            case 'b' : piece = bB ; break;
+            case 'b' : piece = bB; break;
             case 'k' : piece =  bK; break;
             case 'q' : piece = bQ; break;
             case 'P' : piece = wP; break;
@@ -221,6 +222,7 @@ void ResetBoard(S_BOARD *pos){ //function to reset the board
     }
 
     for(i = 0;i < 3; ++i){
+        pos->material[i] = 0;
         pos->bigPce[i] = 0;
         pos->majPce[i] = 0;
         pos->minPce[i] = 0;
